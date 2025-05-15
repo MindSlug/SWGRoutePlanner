@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>SWG Route Planner</title>
+    <style>
+        :root {
+            --bg:         #121212;
+            --fg:         #e0e0e0;
+            --card:       #1e1e1e;
+            --border:     #2c2c2c;
+            --accent:     #3a7bfd;
+            --accent-hover: #2e5fcc;
+            --muted:      #888;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 2em;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: "Segoe UI", sans-serif;
+            display: flex; justify-content: center;
+        }
+
+        .planner {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5em;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            margin: 0 0 1em;
+            font-size: 1.8em;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1em;
+        }
+
+        .group {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1em;
+            display: contents;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85em;
+            margin-bottom: 0.25em;
+            color: #aaa;
+        }
+
+        select {
+            padding: 0.5em;
+            background: var(--card);
+            color: var(--fg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        button {
+            grid-column: 1 / -1;
+            padding: 0.75em;
+            font-size: 1em;
+            margin-top: 0.5em;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1.5em 0;
+        }
+
+        .output-section h2 {
+            margin: 0 0 0.5em;
+            font-size: 1.1em;
+            color: #ccc;
+        }
+
+        textarea#output {
+            width: 100%;
+            min-height: 4em;
+            background: var(--card);
+            color: var(--fg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.75em;
+            font-family: monospace;
+            font-size: 0.95em;
+            overflow: hidden;
+            resize: none;
+        }
+
+        textarea#output:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        #copyBtn {
+            margin-top: 0.75em;
+            background: #555;
+        }
+        #copyBtn:hover {
+            background: #666;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2em;
+            font-size: 0.9em;
+            color: var(--muted);
+        }
+        footer em {
+            font-style: normal;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+<div class="planner">
+    <h1>SWG Route Planner</h1>
+
+    <form id="routeForm" onsubmit="planRoute(); return false;">
+        <div class="group">
+            <div class="field" style="grid-column: 1;">
+                <label for="fromPlanet">From Planet</label>
+                <select id="fromPlanet"></select>
+            </div>
+            <div class="field" style="grid-column: 2;">
+                <label for="fromPort">From Port</label>
+                <select id="fromPort"></select>
+            </div>
+        </div>
+
+        <div class="group">
+            <div class="field" style="grid-column: 1;">
+                <label for="toPlanet">To Planet</label>
+                <select id="toPlanet"></select>
+            </div>
+            <div class="field" style="grid-column: 2;">
+                <label for="toPort">To Port</label>
+                <select id="toPort"></select>
+            </div>
+        </div>
+
+        <button type="submit">Generate Route</button>
+    </form>
+
+    <hr class="divider"/>
+
+    <section class="output-section">
+        <h2>Route Commands</h2>
+        <textarea id="output" readonly></textarea>
+        <button id="copyBtn" onclick="copyCommands()">Copy to Clipboard</button>
+    </section>
+
+    <footer>
+        &copy; MindSlug 2025<br/>
+        <em>v1.06</em>
+    </footer>
+</div>
+
+<script src="./travel_points.js"></script>
+<script src="./swg_route_planner.js"></script>
+<script>
+    // auto-select all text on focus
+    document.getElementById('output').addEventListener('focus', e => e.target.select());
+</script>
+</body>
+</html>
